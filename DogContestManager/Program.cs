@@ -213,33 +213,37 @@ namespace DogContestManager
         }
 
         // Процедура отбора первых трех мест по баллам
-        static void ShowTop3()
+        static void ShowTop()
         {
-            if (contestants.Count == 0)
+            // Магическое число для удобного задания кол-ва записей в топе
+            const int Top = 3;
+
+            List<Contestant> top = new List<Contestant>(contestants);
+            if (top.Count == 0)
             {
                 Console.WriteLine("Список пуст.");
             }
             else
             {
-                for (int i = 0; i < contestants.Count; i++)
+                for (int i = 0; i < top.Count; i++)
                 {
-                    for (int j = i + 1; j < contestants.Count; j++)
+                    for (int j = i + 1; j < top.Count; j++)
                     {
-                        if (contestants[j].exterier_score > contestants[i].exterier_score)
+                        if (top[j].exterier_score > top[i].exterier_score)
                         {
-                            Contestant temp = contestants[i];
-                            contestants[i] = contestants[j];
-                            contestants[j] = temp;
+                            Contestant temp = top[i];
+                            top[i] = top[j];
+                            top[j] = temp;
                         }
                     }
                 }
 
-                Console.WriteLine("--- ТОП-3 УЧАСТНИКОВ ---");
-                for (int i = 0; i < contestants.Count; i++)
+                Console.WriteLine("--- ТОП УЧАСТНИКОВ ---");
+                for (int i = 0; i < top.Count; i++)
                 {
-                    if (i == 3) break; 
+                    if (i == Top) break; 
 
-                    Console.WriteLine($"{i + 1} место: {contestants[i].dog_name} — {contestants[i].exterier_score} баллов");
+                    Console.WriteLine($"{i + 1} место: {top[i].dog_name} — {top[i].exterier_score} баллов");
                 }
             }
                 
@@ -255,7 +259,7 @@ namespace DogContestManager
                 Console.WriteLine("2 - Добавить участника");
                 Console.WriteLine("3 - Удалить участника");
                 Console.WriteLine("4 - Отфильтровать по породе");
-                Console.WriteLine("5 - Вывести первые три места по баллам");
+                Console.WriteLine("5 - Вывести топ мест по баллам");
                 Console.WriteLine("6 - Выйти из программы");
                 Console.WriteLine("Введите ваш выбор: ");
                 try
@@ -282,7 +286,7 @@ namespace DogContestManager
                         SearchByBreed();
                         break;
                     case 5:
-                        ShowTop3();
+                        ShowTop();
                         break;
                     case 6:
                         return;
